@@ -67,6 +67,30 @@ class TasksNotifier extends StateNotifier<List<Task>> {
 
     //await loadTasks();
   }
+
+  Future<void> updateTask(Task updatedTask) async {
+    final db = await _getDatabase();
+
+    // آپدیت تسک با استفاده از id
+    await db.update(
+      'tasks',
+      {
+        'title': updatedTask.title,
+        'description': updatedTask.description,
+        'isCompleted': updatedTask.isCompleted ? 1 : 0, // تبدیل به INTEGER
+      },
+      where: 'id = ?',
+      whereArgs: [updatedTask.id],
+    );
+
+    // آپدیت لیست محلی (state)
+    state = state.map((task) {
+      if (task.id == updatedTask.id) {
+        return updatedTask;
+      }
+      return task;
+    }).toList();
+  }
 }
 
 final tasksProvider = StateNotifierProvider<TasksNotifier, List<Task>>(

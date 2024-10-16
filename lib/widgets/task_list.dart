@@ -61,19 +61,24 @@ class _TaskListState extends ConsumerState<TaskList> {
                               color: Theme.of(context).colorScheme.primary,
                             ),
                             onPressed: () {
-                              setState(() {
-                                widget.tasks[index].isCompleted =
-                                    !widget.tasks[index].isCompleted;
-                              });
+                              //setState(() {
+                              widget.tasks[index].isCompleted =
+                                  !widget.tasks[index].isCompleted;
+                              ref
+                                  .read(tasksProvider.notifier)
+                                  .updateTask(widget.tasks[index]);
+                              // });
                               //TODO : tasksList[index].save();
                             })
                         : IconButton(
                             icon: const Icon(Icons.circle_outlined),
                             onPressed: () {
-                              setState(() {
-                                widget.tasks[index].isCompleted =
-                                    !widget.tasks[index].isCompleted;
-                              });
+                              widget.tasks[index].isCompleted =
+                                  !widget.tasks[index].isCompleted;
+                              ref
+                                  .read(tasksProvider.notifier)
+                                  .updateTask(widget.tasks[index]);
+
                               //task.save();
                             },
                           ),
