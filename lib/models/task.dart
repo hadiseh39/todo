@@ -7,5 +7,6 @@ class Task extends Model {
     required super.title,
     super.description,
     this.isCompleted = false,
+    required super.id,
   });
 }

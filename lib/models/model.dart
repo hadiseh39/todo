@@ -9,5 +9,7 @@ class Model {
   Model({
     required this.title,
     this.description = '',
-  }) : id = const Uuid().v4();
+    required this.id,
+  });
 }
+// : id = const Uuid().v4()
