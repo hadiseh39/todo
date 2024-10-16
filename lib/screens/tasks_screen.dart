@@ -30,7 +30,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const AddTask(
+              builder: (context) => AddTask(
                     screenTitle: 'افزودن وظیفه جدید',
                   )));
         },

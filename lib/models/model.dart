@@ -1,9 +1,9 @@
 import 'package:uuid/uuid.dart';
 
 class Model {
-  final String title;
+  String title;
   final String id;
-  final String description;
+  String description;
   //final DateTime time = DateTime.now();
 
   Model({

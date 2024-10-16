@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/models/task.dart';
 import 'package:todo/providers/task_provider.dart';
 
 class AddTask extends ConsumerStatefulWidget {
-  const AddTask({super.key, required this.screenTitle});
+  AddTask(
+      {super.key,
+      required this.screenTitle,
+      this.isEditing = false,
+      this.task});
 
   final String screenTitle;
+  final bool isEditing;
+  Task? task;
 
   @override
   ConsumerState<AddTask> createState() => _AddTaskState();
@@ -31,8 +38,22 @@ class _AddTaskState extends ConsumerState<AddTask> {
     Navigator.of(context).pop();
   }
 
+  void editTask() {
+    widget.task!.title = _taskTitleController.text;
+    widget.task!.description = _taskDescriptionController.text;
+
+    ref.read(tasksProvider.notifier).updateTask(widget.task!);
+
+    Navigator.of(context).pop();
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (widget.isEditing) {
+      _taskTitleController.text = widget.task!.title;
+      _taskDescriptionController.text = widget.task!.description;
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.screenTitle),
@@ -54,11 +75,17 @@ class _AddTaskState extends ConsumerState<AddTask> {
             const SizedBox(height: 15),
             Row(
               children: [
-                ElevatedButton.icon(
-                  onPressed: saveTask,
-                  label: const Text('افزودن'),
-                  icon: const Icon(Icons.add),
-                ),
+                widget.isEditing
+                    ? ElevatedButton.icon(
+                        onPressed: editTask,
+                        label: const Text('ویرایش'),
+                        icon: const Icon(Icons.edit),
+                      )
+                    : ElevatedButton.icon(
+                        onPressed: saveTask,
+                        label: const Text('افزودن'),
+                        icon: const Icon(Icons.add),
+                      ),
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();

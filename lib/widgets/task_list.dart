@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/providers/task_provider.dart';
+import 'package:todo/screens/add_task.dart';
 
 class TaskList extends ConsumerStatefulWidget {
   const TaskList({super.key, required this.tasks});
@@ -85,10 +86,12 @@ class _TaskListState extends ConsumerState<TaskList> {
                     onTap: () {
                       print(widget.tasks[index].id);
                       setState(() {
-                        // var isEditing = true;
-                        // titleController.text = tasksList[index].title;
-                        // descriptionController.text =
-                        //     task.description;
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => AddTask(
+                                  isEditing: true,
+                                  task: widget.tasks[index],
+                                  screenTitle: 'ویرایش وظیفه ',
+                                )));
                       });
                     },
                   ),
