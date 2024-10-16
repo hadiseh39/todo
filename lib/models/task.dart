@@ -1,14 +1,11 @@
-import 'package:uuid/uuid.dart';
+import 'package:todo/models/model.dart';
 
-class Task {
-  Task({
-    required this.title,
-    this.description = '',
-    this.isCompleted = false,
-  }) : id = const Uuid().v4();
-
-  final String title;
-  final String id;
-  final String description;
+class Task extends Model {
   bool isCompleted;
+
+  Task({
+    required super.title,
+    super.description,
+    this.isCompleted = false,
+  });
 }
