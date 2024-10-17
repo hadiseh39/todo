@@ -4,13 +4,8 @@ import 'package:todo/models/task.dart';
 import 'package:todo/providers/task_provider.dart';
 
 class AddTask extends ConsumerStatefulWidget {
-  AddTask(
-      {super.key,
-      required this.screenTitle,
-      this.isEditing = false,
-      this.task});
+  AddTask({super.key, this.isEditing = false, this.task});
 
-  final String screenTitle;
   final bool isEditing;
   Task? task;
 
@@ -56,7 +51,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.screenTitle),
+        title: Text(widget.isEditing ? 'edit task' : 'add task'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),

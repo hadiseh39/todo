@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:todo/screens/tasks_screen.dart';
 
 final colorScheme = ColorScheme.fromSeed(

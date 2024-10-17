@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/models/task.dart';
-import 'package:path_provider/path_provider.dart' as syspath;
 import 'package:path/path.dart' as path;
 import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
@@ -32,13 +31,14 @@ class TasksNotifier extends StateNotifier<List<Task>> {
               description: row['description'] as String,
               isCompleted: (row['isCompleted'] as int) == 1,
             ))
+        .toList()
+        .reversed
         .toList();
 
     state = tasks;
   }
 
   void addTask(String title, String description) async {
-    //final appdir = await syspath.getApplicationDocumentsDirectory();
     final newTask =
         Task(id: const Uuid().v4(), title: title, description: description);
 
@@ -55,35 +55,29 @@ class TasksNotifier extends StateNotifier<List<Task>> {
   Future<void> deleteTask(String id) async {
     final db = await _getDatabase();
 
-    // حذف تسک بر اساس id
     await db.delete(
       'tasks',
-      where: 'id = ?', // شرط حذف
-      whereArgs: [id], // آرگومان‌های شرط
+      where: 'id = ?',
+      whereArgs: [id],
     );
 
-    // حذف تسک از لیست
     state = state.where((task) => task.id != id).toList();
-
-    //await loadTasks();
   }
 
   Future<void> updateTask(Task updatedTask) async {
     final db = await _getDatabase();
 
-    // آپدیت تسک با استفاده از id
     await db.update(
       'tasks',
       {
         'title': updatedTask.title,
         'description': updatedTask.description,
-        'isCompleted': updatedTask.isCompleted ? 1 : 0, // تبدیل به INTEGER
+        'isCompleted': updatedTask.isCompleted ? 1 : 0,
       },
       where: 'id = ?',
       whereArgs: [updatedTask.id],
     );
 
-    // آپدیت لیست محلی (state)
     state = state.map((task) {
       if (task.id == updatedTask.id) {
         return updatedTask;
@@ -95,16 +89,10 @@ class TasksNotifier extends StateNotifier<List<Task>> {
   Future<int> countCompletedTasks() async {
     final db = await _getDatabase();
 
-    // شمارش تسک‌هایی که isCompleted برابر با 1 دارند
     final completedCount = sql.Sqflite.firstIntValue(
         await db.rawQuery('SELECT COUNT(*) FROM tasks WHERE isCompleted = 1'));
 
-    // اگر داده‌ای پیدا نشد، 0 برگرداند
     return completedCount ?? 0;
-  }
-
-  void getCompletedTasksCount() async {
-    int completedTasksCount = await countCompletedTasks();
   }
 }
 

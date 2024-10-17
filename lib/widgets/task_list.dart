@@ -15,20 +15,18 @@ class TaskList extends ConsumerStatefulWidget {
 }
 
 class _TaskListState extends ConsumerState<TaskList> {
-  int completedTasksCount = 0; // متغیری برای ذخیره تعداد تسک‌های کامل‌شده
+  int completedTasksCount = 0;
 
   @override
   void initState() {
     super.initState();
-    _loadCompletedTasksCount(); // بارگذاری تعداد تسک‌های کامل‌شده در هنگام شروع
+    _loadCompletedTasksCount();
   }
 
   Future<void> _loadCompletedTasksCount() async {
-    final count = await ref
-        .read(tasksProvider.notifier)
-        .countCompletedTasks(); // فراخوانی تابع
+    final count = await ref.read(tasksProvider.notifier).countCompletedTasks();
     setState(() {
-      completedTasksCount = count; // به‌روزرسانی متغیر محلی
+      completedTasksCount = count;
     });
   }
 
@@ -140,7 +138,6 @@ class _TaskListState extends ConsumerState<TaskList> {
                                     builder: (context) => AddTask(
                                           isEditing: true,
                                           task: widget.tasks[index],
-                                          screenTitle: 'ویرایش وظیفه ',
                                         )));
                               });
                             },

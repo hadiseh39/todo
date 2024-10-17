@@ -1,5 +1,3 @@
-import 'package:uuid/uuid.dart';
-
 class Model {
   String title;
   final String id;
@@ -12,4 +10,3 @@ class Model {
     required this.id,
   });
 }
-// : id = const Uuid().v4()
