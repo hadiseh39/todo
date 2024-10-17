@@ -91,6 +91,21 @@ class TasksNotifier extends StateNotifier<List<Task>> {
       return task;
     }).toList();
   }
+
+  Future<int> countCompletedTasks() async {
+    final db = await _getDatabase();
+
+    // شمارش تسک‌هایی که isCompleted برابر با 1 دارند
+    final completedCount = sql.Sqflite.firstIntValue(
+        await db.rawQuery('SELECT COUNT(*) FROM tasks WHERE isCompleted = 1'));
+
+    // اگر داده‌ای پیدا نشد، 0 برگرداند
+    return completedCount ?? 0;
+  }
+
+  void getCompletedTasksCount() async {
+    int completedTasksCount = await countCompletedTasks();
+  }
 }
 
 final tasksProvider = StateNotifierProvider<TasksNotifier, List<Task>>(

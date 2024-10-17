@@ -37,11 +37,15 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
         child: const Icon(Icons.add),
       ),
       body: FutureBuilder(
-          future: _taskFuture,
-          builder: (context, snapshot) =>
-              snapshot.connectionState == ConnectionState.waiting
-                  ? const Center(child: CircularProgressIndicator())
-                  : TaskList(tasks: tasks)),
+        future: _taskFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return TaskList(tasks: tasks);
+          }
+        },
+      ),
     );
   }
 }
