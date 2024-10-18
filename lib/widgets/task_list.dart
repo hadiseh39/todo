@@ -58,6 +58,7 @@ class _TaskListState extends ConsumerState<TaskList> {
                     const SizedBox(width: 20),
                     CircularProgressIndicator(
                       value: completedTasksCount / widget.tasks.length,
+                      backgroundColor: Colors.grey,
                     ),
                   ],
                 ),
@@ -132,7 +133,6 @@ class _TaskListState extends ConsumerState<TaskList> {
                                     },
                                   ),
                             onTap: () {
-                              print(widget.tasks[index].id);
                               setState(() {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => AddTask(
