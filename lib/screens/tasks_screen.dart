@@ -7,21 +7,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/widgets/grocery_list.dart';
 import 'package:todo/widgets/task_list.dart';
 
-class TasksScreen extends ConsumerStatefulWidget {
-  const TasksScreen({super.key, required this.provider});
+class ListScreen extends ConsumerStatefulWidget {
+  const ListScreen({super.key, required this.provider});
 
   final StateNotifierProvider provider;
 
   @override
-  ConsumerState<TasksScreen> createState() => _TasksScreenState();
+  ConsumerState<ListScreen> createState() => _ListScreenState();
 }
 
-class _TasksScreenState extends ConsumerState<TasksScreen> {
+class _ListScreenState extends ConsumerState<ListScreen> {
   late Future<void> _listFuture;
 
   @override
   void initState() {
     super.initState();
+    print(" ${widget.provider} *************************");
+
     if (widget.provider == tasksProvider) {
       _listFuture = ref.read(tasksProvider.notifier).loadTasks();
     } else {
@@ -37,7 +39,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
     }
     return Scaffold(
       // appBar: AppBar(
-      //   title: const Text('to do tasks'),
+      //   title: const Text('items'),
       // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -54,6 +56,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
       body: FutureBuilder(
         future: _listFuture,
         builder: (context, snapshot) {
+          print("Snapshot state: ${snapshot.connectionState} +++++++++++++++");
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (widget.provider == tasksProvider) {

@@ -23,17 +23,17 @@ class _TabsState extends State<Tabs> {
   Widget build(BuildContext context) {
     String activePageTitle = 'تسک ها';
 
-    Widget activePage = TasksScreen(
+    Widget activePage = ListScreen(
+      key: const ValueKey('tasks'),
       provider: tasksProvider,
     );
 
     if (_selectedPageIndex == 1) {
       activePageTitle = 'لیست خرید';
-      activePage = TasksScreen(
+      activePage = ListScreen(
+        key: const ValueKey('groceries'),
         provider: groceryProvider,
       );
-      //   meals: favoritMeals,
-      // );
     }
 
     return Scaffold(

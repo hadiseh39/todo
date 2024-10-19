@@ -10,16 +10,16 @@ class GroceryList extends ConsumerStatefulWidget {
   final List groceryItems;
 
   @override
-  ConsumerState<GroceryList> createState() => _TaskListState();
+  ConsumerState<GroceryList> createState() => _GroceryListState();
 }
 
-class _TaskListState extends ConsumerState<GroceryList> {
-  int completedTasksCount = 0;
+class _GroceryListState extends ConsumerState<GroceryList> {
+  // int completedTasksCount = 0;
 
   // @override
   // void initState() {
   //   super.initState();
-  //   _loadCompletedTasksCount();
+  //   ref.read(groceryProvider.notifier).loadItems();
   // }
 
   // Future<void> _loadCompletedTasksCount() async {
@@ -118,16 +118,8 @@ class _TaskListState extends ConsumerState<GroceryList> {
                             trailing: Text(
                                 widget.groceryItems[index].quantity.toString()),
                             leading: // widget.groceryItems[index].isCompleted?
-                                IconButton(
-                                    icon: Icon(
-                                      Icons.check_circle,
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    ),
-                                    onPressed: () {
-                                      // _toggleTaskCompletion(
-                                      //     widget.tasks[index]);
-                                    }),
+                                widget.groceryItems[index].category.icon,
+
                             // : IconButton(
                             //     icon: const Icon(Icons.circle_outlined),
                             //     onPressed: () {

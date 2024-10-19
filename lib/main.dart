@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/screens/tabs.dart';
-import 'package:todo/screens/tasks_screen.dart';
+import 'package:path/path.dart' as path;
+import 'package:sqflite/sqflite.dart' as sql;
 
 final colorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
@@ -25,7 +26,10 @@ final theme = ThemeData().copyWith(
       ),
 );
 
-void main() {
+void main() async {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // final dbPath = await sql.getDatabasesPath();
+  // await sql.deleteDatabase(path.join(dbPath, 'todo.db'));
   runApp(const ProviderScope(child: MyApp()));
 }
 

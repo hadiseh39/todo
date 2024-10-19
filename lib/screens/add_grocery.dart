@@ -11,20 +11,25 @@ class AddGrocery extends ConsumerStatefulWidget {
   GroceryItem? groceryItem;
 
   @override
-  ConsumerState<AddGrocery> createState() => _AddTaskState();
+  ConsumerState<AddGrocery> createState() => _AddGroceryState();
 }
 
-class _AddTaskState extends ConsumerState<AddGrocery> {
+class _AddGroceryState extends ConsumerState<AddGrocery> {
   final _itemTitleController = TextEditingController();
   final _itemDescriptionController = TextEditingController();
   final _itemQuantityController = TextEditingController();
   var _selectedCategory = categories[Categories.food];
 
+  Categories categoryToEnum(Category category) {
+    return categories.entries
+        .firstWhere((entry) => entry.value.title == category.title)
+        .key;
+  }
+
   void saveItem() {
     final enteredTitle = _itemTitleController.text;
     final enteredDescription = _itemDescriptionController.text;
     final enteredQuantity = int.tryParse(_itemQuantityController.text);
-    //final selectedCategory = _selectedCategory;
 
     if (enteredTitle.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -33,8 +38,13 @@ class _AddTaskState extends ConsumerState<AddGrocery> {
       return;
     }
 
-    ref.read(groceryProvider.notifier).addItem(
-        enteredTitle, enteredDescription, enteredQuantity!, _selectedCategory);
+    final selectedCategoryEnum = categoryToEnum(_selectedCategory);
+
+    ref.read(groceryProvider.notifier).addItem(enteredTitle, enteredDescription,
+        enteredQuantity!, selectedCategoryEnum);
+
+    // ref.read(groceryProvider.notifier).addItem(
+    //     enteredTitle, enteredDescription, enteredQuantity!, _selectedCategory);
 
     Navigator.of(context).pop();
   }
@@ -80,13 +90,12 @@ class _AddTaskState extends ConsumerState<AddGrocery> {
               style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
             ),
             Expanded(
-              child: DropdownButtonFormField(
+              child: DropdownButtonFormField<Category>(
                 items: [
                   for (final category in categories.entries)
                     DropdownMenuItem(
                       value: category.value,
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           category.value.icon,
                           Text(
@@ -100,10 +109,37 @@ class _AddTaskState extends ConsumerState<AddGrocery> {
                 ],
                 onChanged: (value) {
                   setState(() {
-                    _selectedCategory = value;
+                    _selectedCategory = value!;
                   });
                 },
+                decoration: InputDecoration(labelText: 'Select Category'),
               ),
+
+              // DropdownButtonFormField(
+              //   items: [
+              //     for (final category in categories.entries)
+
+              // DropdownMenuItem(
+              //   value: category.value,
+              //   child: Row(
+              //     //crossAxisAlignment: CrossAxisAlignment.end,
+              //     children: [
+              //       category.value.icon,
+              //       Text(
+              //         '  ${category.value.title}',
+              //         style: TextStyle(
+              //             color: Theme.of(context).colorScheme.surface),
+              //       ),
+              //     ],
+              //   ),
+              // )
+              //   ],
+              //   onChanged: (value) {
+              //     setState(() {
+              //       _selectedCategory = value;
+              //     });
+              //   },
+              // ),
             ),
             const SizedBox(height: 15),
             Row(
