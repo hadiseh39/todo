@@ -10,6 +10,6 @@ class GroceryItem extends Model {
     required super.id,
   });
 
-  final int quantity;
-  final Category category;
+  int quantity;
+  Category category;
 }

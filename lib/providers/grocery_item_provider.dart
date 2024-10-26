@@ -99,7 +99,7 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
       'title': newGroceryItem.title,
       'description': newGroceryItem.description,
       'quantity': newGroceryItem.quantity,
-      'category': categoryEnum.name, // ذخیره نام enum (مثلاً 'food')
+      'category': categoryEnum.name,
     });
     print("inserted******************************************");
     final groceryItemData = await db.rawQuery('SELECT * FROM groceryItems');
@@ -119,19 +119,17 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
           print(
               "Category String: $categoryString +++++++++++++++++++++++++++++++++");
 
-          // تبدیل categoryString به enum Categories
           final categoryEnum = Categories.values.firstWhere(
             (e) => e.name == categoryString,
-            orElse: () => Categories.other, // اگر تطابقی یافت نشد
+            orElse: () => Categories.other,
           );
 
-          // استفاده از categories map برای دسترسی به Category
           return GroceryItem(
             id: row['id'] as String,
             title: row['title'] as String,
             description: row['description'] as String,
             quantity: row['quantity'] as int,
-            category: categories[categoryEnum]!, // برگرداندن Category از map
+            category: categories[categoryEnum]!,
           );
         })
         .toList()
@@ -141,30 +139,6 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
 
     state = groceryItems;
   }
-
-  // Future<void> loadItems() async {
-  //   final db = await _getDatabase();
-  //   final groceryItemData = await db.query('groceryItems');
-  //   final groceryItems = groceryItemData
-  //       .map((row) {
-  //         // final categoryString = row['category'] as String;
-  //         // final categoryEnum =
-  //         // Categories.values.firstWhere((e) => e.name == categoryString);
-
-  //         return GroceryItem(
-  //           id: row['id'] as String,
-  //           title: row['title'] as String,
-  //           description: row['description'] as String,
-  //           quantity: row['quantity'] as int,
-  //           category: categories[Categories.book],
-  //         );
-  //       })
-  //       .toList()
-  //       .reversed
-  //       .toList();
-
-  //   state = groceryItems;
-  // }
 
   Future<void> deleteItem(String id) async {
     final db = await _getDatabase1();
@@ -178,27 +152,42 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
     state = state.where((groceryItem) => groceryItem.id != id).toList();
   }
 
-  // Future<void> updateTask(Task updatedTask) async {
-  //   final db = await _getDatabase();
+  Future<void> updateItem(
+    GroceryItem updatedItem,
+    Categories categoryEnum,
+  ) async {
+    final db = await _getDatabase1();
 
-  //   await db.update(
-  //     'tasks',
-  //     {
-  //       'title': updatedTask.title,
-  //       'description': updatedTask.description,
-  //       'isCompleted': updatedTask.isCompleted ? 1 : 0,
-  //     },
-  //     where: 'id = ?',
-  //     whereArgs: [updatedTask.id],
-  //   );
+    await db.update(
+      'groceryItems',
+      {
+        'title': updatedItem.title,
+        'description': updatedItem.description,
+        'quantity': updatedItem.quantity,
+        'category': categoryEnum.name,
+      },
+      where: 'id = ?',
+      whereArgs: [updatedItem.id],
+    );
 
-  //   state = state.map((task) {
-  //     if (task.id == updatedTask.id) {
-  //       return updatedTask;
-  //     }
-  //     return task;
-  //   }).toList();
-  // }
+    final groceryItemData = await db.rawQuery('SELECT * FROM groceryItems');
+    print(groceryItemData);
+
+    state = state.map((groceryItem) {
+      if (groceryItem.id == updatedItem.id) {
+        return GroceryItem(
+          id: updatedItem.id,
+          title: updatedItem.title,
+          description: updatedItem.description,
+          quantity: updatedItem.quantity,
+          category: categories[categoryEnum]!,
+        );
+      }
+      return groceryItem;
+    }).toList();
+
+    print(state);
+  }
 
   // Future<int> countCompletedTasks() async {
   //   final db = await _getDatabase();
