@@ -62,12 +62,13 @@ class _AddTaskState extends ConsumerState<AddTask> {
               controller: _taskTitleController,
               style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
             ),
+            const SizedBox(height: 10),
             TextField(
               decoration: const InputDecoration(labelText: 'توضیحات (اختیاری)'),
               controller: _taskDescriptionController,
               style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 20),
             Row(
               children: [
                 widget.isEditing

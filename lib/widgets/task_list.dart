@@ -39,9 +39,15 @@ class _TaskListState extends ConsumerState<TaskList> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
       child: widget.tasks.isEmpty
-          ? const Text('no task to do')
+          ? Center(
+              child: Text(
+              'no task to do',
+              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
+            ))
           : Column(
               children: [
                 Row(
@@ -58,10 +64,12 @@ class _TaskListState extends ConsumerState<TaskList> {
                     const SizedBox(width: 20),
                     CircularProgressIndicator(
                       value: completedTasksCount / widget.tasks.length,
-                      backgroundColor: Colors.grey,
+                      backgroundColor: const Color.fromARGB(49, 193, 193, 193),
                     ),
+                    const SizedBox(width: 10),
                   ],
                 ),
+                const SizedBox(height: 15),
                 Expanded(
                   child: ListView.builder(
                       itemCount: widget.tasks.length,
@@ -75,6 +83,7 @@ class _TaskListState extends ConsumerState<TaskList> {
 
                             _loadCompletedTasksCount();
 
+                            ScaffoldMessenger.of(context).clearSnackBars();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -106,13 +115,22 @@ class _TaskListState extends ConsumerState<TaskList> {
                             ),
                             subtitle: Text(
                               widget.tasks[index].description,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelMedium!
-                                  .copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
+                              style: widget.tasks[index].isCompleted
+                                  ? TextStyle(
+                                      color: Colors.black,
+                                      fontSize: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium!
+                                          .fontSize,
+                                      decoration: TextDecoration.lineThrough)
+                                  : Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
                             ),
                             leading: widget.tasks[index].isCompleted
                                 ? IconButton(

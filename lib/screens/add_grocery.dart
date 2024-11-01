@@ -18,7 +18,7 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
   final _itemTitleController = TextEditingController();
   final _itemDescriptionController = TextEditingController();
   final _itemQuantityController = TextEditingController();
-  var _selectedCategory = categories[Categories.food];
+  var _selectedCategory;
   var newCt;
 
   Categories categoryToEnum(Category category) {
@@ -39,7 +39,8 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
       return;
     }
 
-    final selectedCategoryEnum = categoryToEnum(_selectedCategory);
+    final selectedCategoryEnum =
+        categoryToEnum(_selectedCategory ?? categories[Categories.food]);
 
     ref.read(groceryProvider.notifier).addItem(enteredTitle, enteredDescription,
         enteredQuantity, selectedCategoryEnum);
@@ -51,8 +52,6 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
     widget.groceryItem!.title = _itemTitleController.text;
     widget.groceryItem!.description = _itemDescriptionController.text;
     widget.groceryItem!.quantity = int.tryParse(_itemQuantityController.text)!;
-    //final selectedCategoryEnum = categoryToEnum(category);
-    print(category);
 
     ref
         .read(groceryProvider.notifier)
@@ -85,69 +84,70 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
               controller: _itemTitleController,
               style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
             ),
+            const SizedBox(height: 15),
+            // Row(
+            //   children: [
             TextField(
               decoration: const InputDecoration(labelText: 'تعداد'),
               keyboardType: TextInputType.number,
               controller: _itemQuantityController,
               style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
             ),
+            const SizedBox(height: 15),
+            //Expanded(
+            //child:
+            DropdownButtonFormField<Category>(
+              value: _selectedCategory,
+              items: [
+                for (final category in categories.entries)
+                  DropdownMenuItem(
+                    value: category.value,
+                    child: Row(
+                      children: [
+                        IconTheme(
+                          data: IconThemeData(
+                            color:
+                                Theme.of(context).colorScheme.onSecondaryFixed,
+                          ),
+                          child: category.value.icon,
+                        ),
+                        Text(
+                          '  ${category.value.title}',
+                          style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryFixed),
+                        ),
+                      ],
+                    ),
+                  )
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _selectedCategory = value!;
+                  if (widget.isEditing) {
+                    newCt = _selectedCategory;
+                  }
+                });
+              },
+              decoration: const InputDecoration(labelText: 'Select Category'),
+            ),
+            //),
+            //   ],
+            // ),
+            const SizedBox(height: 15),
             TextField(
               decoration: const InputDecoration(labelText: 'توضیحات (اختیاری)'),
               controller: _itemDescriptionController,
               style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
             ),
-            Expanded(
-              child: DropdownButtonFormField<Category>(
-                value: _selectedCategory,
-                items: [
-                  for (final category in categories.entries)
-                    DropdownMenuItem(
-                      value: category.value,
-                      child: Row(
-                        children: [
-                          category.value.icon,
-                          Text(
-                            '  ${category.value.title}',
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.surface),
-                          ),
-                        ],
-                      ),
-                    )
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _selectedCategory = value!;
-                    if (widget.isEditing) {
-                      newCt = _selectedCategory;
-                      print(newCt);
-                    }
-                  });
-                },
-                decoration: const InputDecoration(labelText: 'Select Category'),
-              ),
-            ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 20),
             Row(
               children: [
                 widget.isEditing
                     ? ElevatedButton.icon(
                         onPressed: () {
                           editItem(categoryToEnum(newCt ?? _selectedCategory));
-                          print(categoryToEnum(newCt!));
-                          // final category = categoryToEnum(newCt);
-                          // print(categoryToEnum(newCt));
-                          // widget.groceryItem!.title = _itemTitleController.text;
-                          // widget.groceryItem!.description =
-                          //     _itemDescriptionController.text;
-                          // widget.groceryItem!.quantity =
-                          //     int.tryParse(_itemQuantityController.text)!;
-                          // //final selectedCategoryEnum = categoryToEnum(category);
-
-                          // ref.read(groceryProvider.notifier).updateItem(
-                          //     widget.groceryItem!, categoryToEnum(newCt));
-
-                          // Navigator.of(context).pop();
                         },
                         label: const Text('ویرایش'),
                         icon: const Icon(Icons.edit),

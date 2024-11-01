@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/providers/grocery_item_provider.dart';
 import 'package:todo/providers/task_provider.dart';
-import 'package:todo/screens/tasks_screen.dart';
+import 'package:todo/screens/list_screen.dart';
 
 class Tabs extends StatefulWidget {
   const Tabs({super.key});
@@ -43,6 +43,7 @@ class _TabsState extends State<Tabs> {
         body: activePage,
         bottomNavigationBar: BottomNavigationBar(
           onTap: _selectPage,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           currentIndex: _selectedPageIndex,
           items: const [
             BottomNavigationBarItem(

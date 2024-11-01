@@ -74,10 +74,11 @@ class _GroceryListState extends ConsumerState<GroceryList> {
 
                             // _loadCompletedTasksCount();
 
+                            ScaffoldMessenger.of(context).clearSnackBars();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  '${widget.groceryItems[index].title} deleted',
+                                  '${widget.groceryItems[index].title} حذف شد',
                                 ),
                               ),
                             );
@@ -115,6 +116,22 @@ class _GroceryListState extends ConsumerState<GroceryList> {
                                         Theme.of(context).colorScheme.secondary,
                                   ),
                             ),
+                            // Row(children: [
+                            //   widget.groceryItems[index].category.icon,
+                            //   const SizedBox(width: 10),
+                            //   Text(
+                            //     widget.groceryItems[index].category.title,
+                            //     style: Theme.of(context)
+                            //         .textTheme
+                            //         .labelMedium!
+                            //         .copyWith(
+                            //           color: Theme.of(context)
+                            //               .colorScheme
+                            //               .secondary,
+                            //         ),
+                            //   ),
+                            // ]),
+
                             trailing: Text(
                                 widget.groceryItems[index].quantity.toString()),
                             leading: // widget.groceryItems[index].isCompleted?
@@ -128,8 +145,6 @@ class _GroceryListState extends ConsumerState<GroceryList> {
                             //     },
                             //   ),
                             onTap: () {
-                              print(widget.groceryItems[index].category
-                                  .toString());
                               setState(() {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => AddGrocery(

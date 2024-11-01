@@ -6,33 +6,11 @@ import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 import 'package:uuid/uuid.dart';
 
-// Future<Database> _getDatabase() async {
-//   final dbPath = await sql.getDatabasesPath();
-//   final db = await sql.openDatabase(
-//     path.join(dbPath, 'todo.db'),
-//     onCreate: (db, version) {
-//       db.execute(
-//           'CREATE TABLE tasks(id TEXT PRIMARY KEY, title TEXT, description TEXT, isCompleted INTEGER)');
-//     },
-//     onUpgrade: (db, oldVersion, newVersion) {
-//       if (oldVersion < 2) {
-//         print("Upgrading database and creating groceryItems table");
-//         db.execute(
-//             'CREATE TABLE groceryItems(id TEXT PRIMARY KEY, title TEXT, description TEXT, quantity INTEGER, category TEXT)');
-//       }
-//     },
-//     version: 2, // تغییر نسخه دیتابیس به 2
-//   );
-//   return db;
-// }
-
 Future<Database> _getDatabase1() async {
   final dbPath = await sql.getDatabasesPath();
   final db = await sql.openDatabase(
     path.join(dbPath, 'grocery.db'),
     onCreate: (db, version) {
-      print(
-          "Creating groceryItems table******************************************");
       return db.execute(
           'CREATE TABLE groceryItems(id TEXT PRIMARY KEY, title TEXT, description TEXT, quantity INTEGER, category TEXT)');
     },
@@ -67,7 +45,6 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
       'quantity': newGroceryItem.quantity,
       'category': categoryEnum.name,
     });
-    print("inserted******************************************");
     final groceryItemData = await db.rawQuery('SELECT * FROM groceryItems');
     print(groceryItemData);
 
@@ -77,13 +54,10 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
   Future<void> loadItems() async {
     final db = await _getDatabase1();
     final groceryItemData = await db.query('groceryItems');
-    print("load******************************************");
 
     final groceryItems = groceryItemData
         .map((row) {
           final categoryString = row['category'] as String;
-          print(
-              "Category String: $categoryString +++++++++++++++++++++++++++++++++");
 
           final categoryEnum = Categories.values.firstWhere(
             (e) => e.name == categoryString,
@@ -101,7 +75,6 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
         .toList()
         .reversed
         .toList();
-    print("loaded******************************************");
 
     state = groceryItems;
   }
@@ -123,10 +96,6 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
     Categories categoryEnum,
   ) async {
     final db = await _getDatabase1();
-
-    print("Updating item with ID: ${updatedItem.id}");
-    print(
-        "Title: ${updatedItem.title}, Description: ${updatedItem.description}, Quantity: ${updatedItem.quantity}, Category: ${categoryEnum.name}");
 
     await db.update(
       'groceryItems',
@@ -155,8 +124,6 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
       }
       return groceryItem;
     }).toList();
-
-    print(state);
   }
 }
 

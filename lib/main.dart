@@ -13,15 +13,20 @@ final colorScheme = ColorScheme.fromSeed(
 final theme = ThemeData().copyWith(
   scaffoldBackgroundColor: colorScheme.surface,
   colorScheme: colorScheme,
-  textTheme: ThemeData().textTheme.copyWith(
+  textTheme: ThemeData(
+    fontFamily: 'Sahel',
+  ).textTheme.copyWith(
         titleSmall: const TextStyle(
           fontWeight: FontWeight.bold,
+          fontFamily: 'Sahel',
         ),
         titleMedium: const TextStyle(
           fontWeight: FontWeight.bold,
+          fontFamily: 'Sahel',
         ),
         titleLarge: const TextStyle(
           fontWeight: FontWeight.bold,
+          fontFamily: 'Sahel',
         ),
       ),
 );

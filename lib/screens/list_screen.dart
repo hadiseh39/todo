@@ -22,8 +22,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
   @override
   void initState() {
     super.initState();
-    print(" ${widget.provider} *************************");
-
     if (widget.provider == tasksProvider) {
       _listFuture = ref.read(tasksProvider.notifier).loadTasks();
     } else {
@@ -38,9 +36,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       data = ref.watch(groceryProvider);
     }
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text('items'),
-      // ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context) {
@@ -56,7 +51,6 @@ class _ListScreenState extends ConsumerState<ListScreen> {
       body: FutureBuilder(
         future: _listFuture,
         builder: (context, snapshot) {
-          print("Snapshot state: ${snapshot.connectionState} +++++++++++++++");
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (widget.provider == tasksProvider) {
