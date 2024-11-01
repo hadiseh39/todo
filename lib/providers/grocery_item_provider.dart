@@ -6,27 +6,25 @@ import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 import 'package:uuid/uuid.dart';
 
-Future<Database> _getDatabase() async {
-  final dbPath = await sql.getDatabasesPath();
-  final db = await sql.openDatabase(
-    path.join(dbPath, 'todo.db'),
-    onCreate: (db, version) {
-      // این فقط برای زمانی است که دیتابیس تازه ساخته می‌شود
-      db.execute(
-          'CREATE TABLE tasks(id TEXT PRIMARY KEY, title TEXT, description TEXT, isCompleted INTEGER)');
-    },
-    onUpgrade: (db, oldVersion, newVersion) {
-      if (oldVersion < 2) {
-        // اضافه کردن جدول groceryItems در صورت نیاز به آپدیت
-        print("Upgrading database and creating groceryItems table");
-        db.execute(
-            'CREATE TABLE groceryItems(id TEXT PRIMARY KEY, title TEXT, description TEXT, quantity INTEGER, category TEXT)');
-      }
-    },
-    version: 2, // تغییر نسخه دیتابیس به 2
-  );
-  return db;
-}
+// Future<Database> _getDatabase() async {
+//   final dbPath = await sql.getDatabasesPath();
+//   final db = await sql.openDatabase(
+//     path.join(dbPath, 'todo.db'),
+//     onCreate: (db, version) {
+//       db.execute(
+//           'CREATE TABLE tasks(id TEXT PRIMARY KEY, title TEXT, description TEXT, isCompleted INTEGER)');
+//     },
+//     onUpgrade: (db, oldVersion, newVersion) {
+//       if (oldVersion < 2) {
+//         print("Upgrading database and creating groceryItems table");
+//         db.execute(
+//             'CREATE TABLE groceryItems(id TEXT PRIMARY KEY, title TEXT, description TEXT, quantity INTEGER, category TEXT)');
+//       }
+//     },
+//     version: 2, // تغییر نسخه دیتابیس به 2
+//   );
+//   return db;
+// }
 
 Future<Database> _getDatabase1() async {
   final dbPath = await sql.getDatabasesPath();
@@ -45,38 +43,6 @@ Future<Database> _getDatabase1() async {
 
 class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
   GroceryItemNotifier() : super(const []);
-
-  // void addItem(
-  //   String title,
-  //   String description,
-  //   int quantity,
-  //   Category category,
-  // ) async {
-  //   final newGroceryItem = GroceryItem(
-  //       id: const Uuid().v4(),
-  //       title: title,
-  //       description: description,
-  //       quantity: quantity,
-  //       category: category);
-
-  //   final db = await _getDatabase();
-  //   db.insert('groceryItems', {
-  //     'id': newGroceryItem.id,
-  //     'title': newGroceryItem.title,
-  //     'description': newGroceryItem.description,
-  //     'quantity': newGroceryItem.quantity,
-  //     'category': categories.keys
-  //         .firstWhere((k) => categories[k] == newGroceryItem.category)
-  //         .name,
-  //     //newGroceryItem.category // categories.keys
-  //     //     .firstWhere((k) => categories[k] == newGroceryItem.category)
-  //     //     .name,
-  //   });
-
-  //   state = [newGroceryItem, ...state];
-  // }
-
-  // ******************
 
   void addItem(
     String title,
@@ -158,6 +124,10 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
   ) async {
     final db = await _getDatabase1();
 
+    print("Updating item with ID: ${updatedItem.id}");
+    print(
+        "Title: ${updatedItem.title}, Description: ${updatedItem.description}, Quantity: ${updatedItem.quantity}, Category: ${categoryEnum.name}");
+
     await db.update(
       'groceryItems',
       {
@@ -188,15 +158,6 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
 
     print(state);
   }
-
-  // Future<int> countCompletedTasks() async {
-  //   final db = await _getDatabase();
-
-  //   final completedCount = sql.Sqflite.firstIntValue(
-  //       await db.rawQuery('SELECT COUNT(*) FROM tasks WHERE isCompleted = 1'));
-
-  //   return completedCount ?? 0;
-  // }
 }
 
 final groceryProvider =
