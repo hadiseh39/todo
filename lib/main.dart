@@ -44,9 +44,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      locale: const Locale('fa'),
       debugShowCheckedModeBanner: false,
       theme: theme,
-      home: const Tabs(),
+      home:
+          const Directionality(textDirection: TextDirection.rtl, child: Tabs()),
     );
   }
 }

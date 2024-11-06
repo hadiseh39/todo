@@ -30,11 +30,12 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
   void saveItem() {
     final enteredTitle = _itemTitleController.text;
     final enteredDescription = _itemDescriptionController.text;
-    final enteredQuantity = int.tryParse(_itemQuantityController.text);
+    var enteredQuantity = int.tryParse(_itemQuantityController.text) ?? 1;
 
-    if (enteredTitle.isEmpty || enteredQuantity == null) {
+    if (enteredTitle.isEmpty) {
+      ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('The title or Quantity cannot be empty'),
+        content: Text('عنوان آیتم نمی‌تونه خالی باشه!'),
       ));
       return;
     }
@@ -70,102 +71,105 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
       _selectedCategory = categories[itemCategory];
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title:
-            Text(widget.isEditing ? 'edit grocery Item' : 'add grocery Item'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            TextField(
-              decoration: const InputDecoration(labelText: 'عنوان'),
-              controller: _itemTitleController,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-            ),
-            const SizedBox(height: 15),
-            // Row(
-            //   children: [
-            TextField(
-              decoration: const InputDecoration(labelText: 'تعداد'),
-              keyboardType: TextInputType.number,
-              controller: _itemQuantityController,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-            ),
-            const SizedBox(height: 15),
-            //Expanded(
-            //child:
-            DropdownButtonFormField<Category>(
-              value: _selectedCategory,
-              items: [
-                for (final category in categories.entries)
-                  DropdownMenuItem(
-                    value: category.value,
-                    child: Row(
-                      children: [
-                        IconTheme(
-                          data: IconThemeData(
-                            color:
-                                Theme.of(context).colorScheme.onSecondaryFixed,
-                          ),
-                          child: category.value.icon,
-                        ),
-                        Text(
-                          '  ${category.value.title}',
-                          style: TextStyle(
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.isEditing ? 'ویرایش آیتم' : 'افزودن آیتم'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              TextField(
+                decoration: const InputDecoration(labelText: 'عنوان'),
+                controller: _itemTitleController,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              ),
+              const SizedBox(height: 15),
+              TextField(
+                decoration: const InputDecoration(labelText: 'تعداد'),
+                keyboardType: TextInputType.number,
+                controller: _itemQuantityController,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              ),
+              const SizedBox(height: 15),
+              DropdownButtonFormField<Category>(
+                value: _selectedCategory,
+                items: [
+                  for (final category in categories.entries)
+                    DropdownMenuItem(
+                      value: category.value,
+                      child: Row(
+                        children: [
+                          IconTheme(
+                            data: IconThemeData(
                               color: Theme.of(context)
                                   .colorScheme
-                                  .onSecondaryFixed),
-                        ),
-                      ],
-                    ),
-                  )
-              ],
-              onChanged: (value) {
-                setState(() {
-                  _selectedCategory = value!;
-                  if (widget.isEditing) {
-                    newCt = _selectedCategory;
-                  }
-                });
-              },
-              decoration: const InputDecoration(labelText: 'Select Category'),
-            ),
-            //),
-            //   ],
-            // ),
-            const SizedBox(height: 15),
-            TextField(
-              decoration: const InputDecoration(labelText: 'توضیحات (اختیاری)'),
-              controller: _itemDescriptionController,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                widget.isEditing
-                    ? ElevatedButton.icon(
-                        onPressed: () {
-                          editItem(categoryToEnum(newCt ?? _selectedCategory));
-                        },
-                        label: const Text('ویرایش'),
-                        icon: const Icon(Icons.edit),
-                      )
-                    : ElevatedButton.icon(
-                        onPressed: saveItem,
-                        label: const Text('افزودن'),
-                        icon: const Icon(Icons.add),
+                                  .onSecondaryFixed,
+                            ),
+                            child: category.value.icon,
+                          ),
+                          Text(
+                            '  ${category.value.title}',
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSecondaryFixed),
+                          ),
+                        ],
                       ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('لغو'),
-                ),
-              ],
-            )
-          ],
+                    )
+                ],
+                onChanged: (value) {
+                  setState(() {
+                    _selectedCategory = value!;
+                    if (widget.isEditing) {
+                      newCt = _selectedCategory;
+                    }
+                  });
+                },
+                decoration:
+                    const InputDecoration(labelText: 'انتخاب دسته بندی'),
+              ),
+              const SizedBox(height: 15),
+              TextField(
+                decoration:
+                    const InputDecoration(labelText: 'توضیحات (اختیاری)'),
+                controller: _itemDescriptionController,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('لغو'),
+                  ),
+                  widget.isEditing
+                      ? ElevatedButton.icon(
+                          onPressed: () {
+                            editItem(
+                                categoryToEnum(newCt ?? _selectedCategory));
+                          },
+                          label: const Text('ویرایش'),
+                          icon: const Icon(Icons.edit),
+                        )
+                      : ElevatedButton.icon(
+                          onPressed: saveItem,
+                          label: const Text('افزودن'),
+                          icon: const Icon(Icons.add),
+                        ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

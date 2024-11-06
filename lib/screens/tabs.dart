@@ -39,10 +39,41 @@ class _TabsState extends State<Tabs> {
     return Scaffold(
         appBar: AppBar(
           title: Text(activePageTitle),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: const Text(
+                              'راهنما',
+                              textDirection: TextDirection.rtl,
+                            ),
+                            content: const Text(
+                              'برای افزودن آیتم‌ها، از دکمه + موجود در پایین صفحه استفاده کنید.\nو برای حذف آیتم‌ها، آن‌ها را به سمت راست یا چپ بکشید.',
+                              textAlign: TextAlign.right,
+                              textDirection: TextDirection.rtl,
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text(
+                                  'تائید',
+                                ),
+                              )
+                            ],
+                          ));
+                },
+                icon: const Icon(Icons.question_mark_rounded))
+          ],
         ),
         body: activePage,
         bottomNavigationBar: BottomNavigationBar(
           onTap: _selectPage,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          unselectedItemColor: Theme.of(context).colorScheme.outline,
           backgroundColor: Theme.of(context).colorScheme.surface,
           currentIndex: _selectedPageIndex,
           items: const [

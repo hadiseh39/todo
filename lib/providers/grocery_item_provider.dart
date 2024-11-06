@@ -6,7 +6,7 @@ import 'package:sqflite/sqflite.dart' as sql;
 import 'package:sqflite/sqlite_api.dart';
 import 'package:uuid/uuid.dart';
 
-Future<Database> _getDatabase1() async {
+Future<Database> _getDatabase() async {
   final dbPath = await sql.getDatabasesPath();
   final db = await sql.openDatabase(
     path.join(dbPath, 'grocery.db'),
@@ -26,18 +26,17 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
     String title,
     String description,
     int quantity,
-    Categories categoryEnum, // از enum به جای Category استفاده می‌کنیم
+    Categories categoryEnum,
   ) async {
     final newGroceryItem = GroceryItem(
       id: const Uuid().v4(),
       title: title,
       description: description,
       quantity: quantity,
-      category: categories[
-          categoryEnum]!, // از map برای دریافت Category استفاده می‌کنیم
+      category: categories[categoryEnum]!,
     );
 
-    final db = await _getDatabase1();
+    final db = await _getDatabase();
     db.insert('groceryItems', {
       'id': newGroceryItem.id,
       'title': newGroceryItem.title,
@@ -45,14 +44,12 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
       'quantity': newGroceryItem.quantity,
       'category': categoryEnum.name,
     });
-    final groceryItemData = await db.rawQuery('SELECT * FROM groceryItems');
-    print(groceryItemData);
 
     state = [newGroceryItem, ...state];
   }
 
   Future<void> loadItems() async {
-    final db = await _getDatabase1();
+    final db = await _getDatabase();
     final groceryItemData = await db.query('groceryItems');
 
     final groceryItems = groceryItemData
@@ -80,7 +77,7 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
   }
 
   Future<void> deleteItem(String id) async {
-    final db = await _getDatabase1();
+    final db = await _getDatabase();
 
     await db.delete(
       'groceryItems',
@@ -95,7 +92,7 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
     GroceryItem updatedItem,
     Categories categoryEnum,
   ) async {
-    final db = await _getDatabase1();
+    final db = await _getDatabase();
 
     await db.update(
       'groceryItems',
@@ -108,9 +105,6 @@ class GroceryItemNotifier extends StateNotifier<List<GroceryItem>> {
       where: 'id = ?',
       whereArgs: [updatedItem.id],
     );
-
-    final groceryItemData = await db.rawQuery('SELECT * FROM groceryItems');
-    print(groceryItemData);
 
     state = state.map((groceryItem) {
       if (groceryItem.id == updatedItem.id) {

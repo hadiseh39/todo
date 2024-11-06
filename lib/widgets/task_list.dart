@@ -43,7 +43,7 @@ class _TaskListState extends ConsumerState<TaskList> {
       child: widget.tasks.isEmpty
           ? Center(
               child: Text(
-              'no task to do',
+              'تسکی برای انجام یافت نشد',
               style: Theme.of(context).textTheme.titleLarge!.copyWith(
                     color: Theme.of(context).colorScheme.secondary,
                   ),
@@ -55,8 +55,8 @@ class _TaskListState extends ConsumerState<TaskList> {
                   children: [
                     Text(
                       completedTasksCount == widget.tasks.length
-                          ? 'All tasks completed'
-                          : 'Completed Tasks: $completedTasksCount of ${widget.tasks.length}',
+                          ? 'همه تسک‌ها انجام شدند!'
+                          : 'تسک‌های انجام شده: $completedTasksCount از ${widget.tasks.length}',
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
@@ -87,7 +87,7 @@ class _TaskListState extends ConsumerState<TaskList> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  '${widget.tasks[index].title} deleted',
+                                  '${widget.tasks[index].title} حذف شد',
                                 ),
                               ),
                             );

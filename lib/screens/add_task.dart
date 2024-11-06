@@ -22,8 +22,9 @@ class _AddTaskState extends ConsumerState<AddTask> {
     final enteredDescription = _taskDescriptionController.text;
 
     if (enteredTitle.isEmpty) {
+      ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('The task title cannot be empty'),
+        content: Text('عنوان تسک نمی‌تونه خالی باشه!'),
       ));
       return;
     }
@@ -49,48 +50,55 @@ class _AddTaskState extends ConsumerState<AddTask> {
       _taskDescriptionController.text = widget.task!.description;
     }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.isEditing ? 'edit task' : 'add task'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            TextField(
-              decoration: const InputDecoration(labelText: 'عنوان'),
-              controller: _taskTitleController,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              decoration: const InputDecoration(labelText: 'توضیحات (اختیاری)'),
-              controller: _taskDescriptionController,
-              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                widget.isEditing
-                    ? ElevatedButton.icon(
-                        onPressed: editTask,
-                        label: const Text('ویرایش'),
-                        icon: const Icon(Icons.edit),
-                      )
-                    : ElevatedButton.icon(
-                        onPressed: saveTask,
-                        label: const Text('افزودن'),
-                        icon: const Icon(Icons.add),
-                      ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text('لغو'),
-                ),
-              ],
-            )
-          ],
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(widget.isEditing ? 'ویرایش تسک' : 'افزودن تسک جدید'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              TextField(
+                decoration: const InputDecoration(labelText: 'عنوان'),
+                controller: _taskTitleController,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                decoration:
+                    const InputDecoration(labelText: 'توضیحات (اختیاری)'),
+                controller: _taskDescriptionController,
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('لغو'),
+                  ),
+                  widget.isEditing
+                      ? ElevatedButton.icon(
+                          onPressed: editTask,
+                          label: const Text('ویرایش'),
+                          icon: const Icon(Icons.edit),
+                        )
+                      : ElevatedButton.icon(
+                          onPressed: saveTask,
+                          label: const Text('افزودن'),
+                          icon: const Icon(Icons.add),
+                        ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
