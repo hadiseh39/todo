@@ -35,7 +35,7 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
     if (enteredTitle.isEmpty) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('عنوان آیتم نمی‌تونه خالی باشه!'),
+        content: Text('The item title can\'t be empty!'),
       ));
       return;
     }
@@ -75,21 +75,21 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.isEditing ? 'ویرایش آیتم' : 'افزودن آیتم'),
+          title: Text(widget.isEditing ? 'Edit Item' : 'Add New Item'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
             children: [
               TextField(
-                decoration: const InputDecoration(labelText: 'عنوان'),
+                decoration: const InputDecoration(labelText: 'Title'),
                 controller: _itemTitleController,
                 style:
                     TextStyle(color: Theme.of(context).colorScheme.onSurface),
               ),
               const SizedBox(height: 15),
               TextField(
-                decoration: const InputDecoration(labelText: 'تعداد'),
+                decoration: const InputDecoration(labelText: 'Quantity'),
                 keyboardType: TextInputType.number,
                 controller: _itemQuantityController,
                 style:
@@ -132,12 +132,12 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
                   });
                 },
                 decoration:
-                    const InputDecoration(labelText: 'انتخاب دسته بندی'),
+                    const InputDecoration(labelText: 'Select a Category'),
               ),
               const SizedBox(height: 15),
               TextField(
                 decoration:
-                    const InputDecoration(labelText: 'توضیحات (اختیاری)'),
+                    const InputDecoration(labelText: 'Description (optional)'),
                 controller: _itemDescriptionController,
                 style:
                     TextStyle(color: Theme.of(context).colorScheme.onSurface),
@@ -150,7 +150,7 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('لغو'),
+                    child: const Text('cancel'),
                   ),
                   widget.isEditing
                       ? ElevatedButton.icon(
@@ -158,12 +158,12 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
                             editItem(
                                 categoryToEnum(newCt ?? _selectedCategory));
                           },
-                          label: const Text('ویرایش'),
+                          label: const Text('Edit'),
                           icon: const Icon(Icons.edit),
                         )
                       : ElevatedButton.icon(
                           onPressed: saveItem,
-                          label: const Text('افزودن'),
+                          label: const Text('Add'),
                           icon: const Icon(Icons.add),
                         ),
                 ],

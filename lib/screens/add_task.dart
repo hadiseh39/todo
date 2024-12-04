@@ -24,7 +24,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
     if (enteredTitle.isEmpty) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('عنوان تسک نمی‌تونه خالی باشه!'),
+        content: Text('The task title can\'t be empty!'),
       ));
       return;
     }
@@ -54,14 +54,14 @@ class _AddTaskState extends ConsumerState<AddTask> {
       textDirection: TextDirection.rtl,
       child: Scaffold(
         appBar: AppBar(
-          title: Text(widget.isEditing ? 'ویرایش تسک' : 'افزودن تسک جدید'),
+          title: Text(widget.isEditing ? 'Edit Task' : 'Add New Task'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(15),
           child: Column(
             children: [
               TextField(
-                decoration: const InputDecoration(labelText: 'عنوان'),
+                decoration: const InputDecoration(labelText: 'Title'),
                 controller: _taskTitleController,
                 style:
                     TextStyle(color: Theme.of(context).colorScheme.onSurface),
@@ -69,7 +69,7 @@ class _AddTaskState extends ConsumerState<AddTask> {
               const SizedBox(height: 10),
               TextField(
                 decoration:
-                    const InputDecoration(labelText: 'توضیحات (اختیاری)'),
+                    const InputDecoration(labelText: 'Description (optional)'),
                 controller: _taskDescriptionController,
                 style:
                     TextStyle(color: Theme.of(context).colorScheme.onSurface),
@@ -82,17 +82,17 @@ class _AddTaskState extends ConsumerState<AddTask> {
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: const Text('لغو'),
+                    child: const Text('cancel'),
                   ),
                   widget.isEditing
                       ? ElevatedButton.icon(
                           onPressed: editTask,
-                          label: const Text('ویرایش'),
+                          label: const Text('Edit'),
                           icon: const Icon(Icons.edit),
                         )
                       : ElevatedButton.icon(
                           onPressed: saveTask,
-                          label: const Text('افزودن'),
+                          label: const Text('Add'),
                           icon: const Icon(Icons.add),
                         ),
                 ],

@@ -24,51 +24,51 @@ enum Categories {
 
 Map categories = {
   Categories.food: Category(
-    title: 'خوراک',
+    title: 'Food',
     icon: const Icon(Icons.fastfood_rounded),
   ),
   Categories.clothes: Category(
-    title: 'پوشاک',
+    title: 'Clothes',
     icon: const Icon(Icons.dry_cleaning_rounded),
   ),
   Categories.work: Category(
-    title: 'کسب و کار',
+    title: 'Work',
     icon: const Icon(Icons.work),
   ),
   Categories.health: Category(
-    title: 'سلامتی ، آرایشی و بهداشتی',
+    title: 'Health',
     icon: const Icon(Icons.medication_rounded),
   ),
   Categories.sport: Category(
-    title: 'ورزش',
+    title: 'Workout',
     icon: const Icon(Icons.sports_basketball_rounded),
   ),
   Categories.home: Category(
-    title: 'لوازم خانه',
+    title: 'Home',
     icon: const Icon(Icons.home),
   ),
   Categories.education: Category(
-    title: 'تحصیلات و آموزش',
+    title: 'Education',
     icon: const Icon(Icons.edit_document),
   ),
   Categories.travel: Category(
-    title: 'مسافرت',
+    title: 'Travel',
     icon: const Icon(Icons.airplanemode_active_rounded),
   ),
   Categories.entertainment: Category(
-    title: 'سرگرمی',
+    title: 'Leisure',
     icon: const Icon(Icons.sports_esports),
   ),
   Categories.book: Category(
-    title: 'کتاب',
+    title: 'Book',
     icon: const Icon(Icons.menu_book_sharp),
   ),
   Categories.accessory: Category(
-    title: 'اکسسوری',
+    title: 'Accessory',
     icon: const Icon(Icons.diamond_rounded),
   ),
   Categories.other: Category(
-    title: 'سایر',
+    title: 'Other',
     icon: const Icon(Icons.more_horiz),
   ),
 };

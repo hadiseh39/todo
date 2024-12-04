@@ -21,7 +21,7 @@ class _TabsState extends State<Tabs> {
 
   @override
   Widget build(BuildContext context) {
-    String activePageTitle = 'تسک ها';
+    String activePageTitle = 'Tasks';
 
     Widget activePage = ListScreen(
       key: const ValueKey('tasks'),
@@ -29,7 +29,7 @@ class _TabsState extends State<Tabs> {
     );
 
     if (_selectedPageIndex == 1) {
-      activePageTitle = 'لیست خرید';
+      activePageTitle = 'Grocery Items';
       activePage = ListScreen(
         key: const ValueKey('groceries'),
         provider: groceryProvider,
@@ -39,35 +39,35 @@ class _TabsState extends State<Tabs> {
     return Scaffold(
         appBar: AppBar(
           title: Text(activePageTitle),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            title: const Text(
-                              'راهنما',
-                              textDirection: TextDirection.rtl,
-                            ),
-                            content: const Text(
-                              'برای افزودن آیتم‌ها، از دکمه + موجود در پایین صفحه استفاده کنید.\nو برای حذف آیتم‌ها، آن‌ها را به سمت راست یا چپ بکشید.',
-                              textAlign: TextAlign.right,
-                              textDirection: TextDirection.rtl,
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text(
-                                  'تائید',
-                                ),
-                              )
-                            ],
-                          ));
-                },
-                icon: const Icon(Icons.question_mark_rounded))
-          ],
+          // actions: [
+          //   IconButton(
+          //       onPressed: () {
+          //         showDialog(
+          //             context: context,
+          //             builder: (context) => AlertDialog(
+          //                   title: const Text(
+          //                     'Help',
+          //                     textDirection: TextDirection.rtl,
+          //                   ),
+          //                   content: const Text(
+          //                     'To remove items, drag them to the right or left.',
+          //                     textAlign: TextAlign.right,
+          //                     textDirection: TextDirection.rtl,
+          //                   ),
+          //                   actions: [
+          //                     TextButton(
+          //                       onPressed: () {
+          //                         Navigator.pop(context);
+          //                       },
+          //                       child: const Text(
+          //                         'OK',
+          //                       ),
+          //                     )
+          //                   ],
+          //                 ));
+          //       },
+          //       icon: const Icon(Icons.question_mark_rounded))
+          // ],
         ),
         body: activePage,
         bottomNavigationBar: BottomNavigationBar(
@@ -79,11 +79,11 @@ class _TabsState extends State<Tabs> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.format_list_bulleted_rounded),
-              label: 'تسک ها',
+              label: 'Tasks',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.shopping_basket),
-              label: 'لیست خرید',
+              label: 'Shopping List',
             ),
           ],
         ));

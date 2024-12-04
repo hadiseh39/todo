@@ -20,7 +20,7 @@ class _GroceryListState extends ConsumerState<GroceryList> {
       child: widget.groceryItems.isEmpty
           ? Center(
               child: Text(
-                'چیزی برای خرید یافت نشد',
+                'No Item Added yet',
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       color: Theme.of(context).colorScheme.secondary,
                     ),
@@ -43,7 +43,7 @@ class _GroceryListState extends ConsumerState<GroceryList> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  '${widget.groceryItems[index].title} حذف شد',
+                                  '${widget.groceryItems[index].title} deleted!',
                                 ),
                               ),
                             );
