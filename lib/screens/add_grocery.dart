@@ -71,105 +71,96 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
       _selectedCategory = categories[itemCategory];
     }
 
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.isEditing ? 'Edit Item' : 'Add New Item'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Column(
-            children: [
-              TextField(
-                decoration: const InputDecoration(labelText: 'Title'),
-                controller: _itemTitleController,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
-              ),
-              const SizedBox(height: 15),
-              TextField(
-                decoration: const InputDecoration(labelText: 'Quantity'),
-                keyboardType: TextInputType.number,
-                controller: _itemQuantityController,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
-              ),
-              const SizedBox(height: 15),
-              DropdownButtonFormField<Category>(
-                value: _selectedCategory,
-                items: [
-                  for (final category in categories.entries)
-                    DropdownMenuItem(
-                      value: category.value,
-                      child: Row(
-                        children: [
-                          IconTheme(
-                            data: IconThemeData(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.isEditing ? 'Edit Item' : 'Add New Item'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          children: [
+            TextField(
+              decoration: const InputDecoration(labelText: 'Title'),
+              controller: _itemTitleController,
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            ),
+            const SizedBox(height: 15),
+            TextField(
+              decoration: const InputDecoration(labelText: 'Quantity'),
+              keyboardType: TextInputType.number,
+              controller: _itemQuantityController,
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            ),
+            const SizedBox(height: 15),
+            DropdownButtonFormField<Category>(
+              value: _selectedCategory,
+              items: [
+                for (final category in categories.entries)
+                  DropdownMenuItem(
+                    value: category.value,
+                    child: Row(
+                      children: [
+                        IconTheme(
+                          data: IconThemeData(
+                            color:
+                                Theme.of(context).colorScheme.onSecondaryFixed,
+                          ),
+                          child: category.value.icon,
+                        ),
+                        Text(
+                          '  ${category.value.title}',
+                          style: TextStyle(
                               color: Theme.of(context)
                                   .colorScheme
-                                  .onSecondaryFixed,
-                            ),
-                            child: category.value.icon,
-                          ),
-                          Text(
-                            '  ${category.value.title}',
-                            style: TextStyle(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSecondaryFixed),
-                          ),
-                        ],
-                      ),
-                    )
-                ],
-                onChanged: (value) {
-                  setState(() {
-                    _selectedCategory = value!;
-                    if (widget.isEditing) {
-                      newCt = _selectedCategory;
-                    }
-                  });
-                },
-                decoration:
-                    const InputDecoration(labelText: 'Select a Category'),
-              ),
-              const SizedBox(height: 15),
-              TextField(
-                decoration:
-                    const InputDecoration(labelText: 'Description (optional)'),
-                controller: _itemDescriptionController,
-                style:
-                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('cancel'),
-                  ),
-                  widget.isEditing
-                      ? ElevatedButton.icon(
-                          onPressed: () {
-                            editItem(
-                                categoryToEnum(newCt ?? _selectedCategory));
-                          },
-                          label: const Text('Edit'),
-                          icon: const Icon(Icons.edit),
-                        )
-                      : ElevatedButton.icon(
-                          onPressed: saveItem,
-                          label: const Text('Add'),
-                          icon: const Icon(Icons.add),
+                                  .onSecondaryFixed),
                         ),
-                ],
-              )
-            ],
-          ),
+                      ],
+                    ),
+                  )
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _selectedCategory = value!;
+                  if (widget.isEditing) {
+                    newCt = _selectedCategory;
+                  }
+                });
+              },
+              decoration: const InputDecoration(labelText: 'Select a Category'),
+            ),
+            const SizedBox(height: 15),
+            TextField(
+              decoration:
+                  const InputDecoration(labelText: 'Description (optional)'),
+              controller: _itemDescriptionController,
+              style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('cancel'),
+                ),
+                widget.isEditing
+                    ? ElevatedButton.icon(
+                        onPressed: () {
+                          editItem(categoryToEnum(newCt ?? _selectedCategory));
+                        },
+                        label: const Text('Edit'),
+                        icon: const Icon(Icons.edit),
+                      )
+                    : ElevatedButton.icon(
+                        onPressed: saveItem,
+                        label: const Text('Add'),
+                        icon: const Icon(Icons.add),
+                      ),
+              ],
+            )
+          ],
         ),
       ),
     );
