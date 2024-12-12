@@ -77,7 +77,7 @@ class _AddGroceryState extends ConsumerState<AddGrocery> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: Column(
+        child: ListView(
           children: [
             TextField(
               decoration: const InputDecoration(labelText: 'Title'),
